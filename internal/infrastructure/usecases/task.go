@@ -6,7 +6,7 @@ import (
 )
 
 type TaskUseCase interface {
-	Save(task taskEntity.Task) error
+	Save(task taskEntity.Task) (taskEntity.Task, error)
 	GetById(id int) (taskEntity.Task, error)
 	GetByName(name string) (taskEntity.Task, error)
 	Update(id int, task taskEntity.Task) (taskEntity.Task, error)
@@ -23,7 +23,7 @@ func NewTaskUseCase(taskRepository taskRepository.TaskRepository) TaskUseCase {
 	}
 }
 
-func (s *taskUseCase) Save(task taskEntity.Task) error {
+func (s *taskUseCase) Save(task taskEntity.Task) (taskEntity.Task, error) {
 	return s.taskRepository.Save(task)
 }
 
