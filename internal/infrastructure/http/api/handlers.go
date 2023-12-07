@@ -1,17 +1,17 @@
-package application
+package api
 
 import (
 	"github.com/gin-gonic/gin"
-	domain "github.com/yescorihuela/tasks_management/internal/domain/entities"
-	taskUseCase "github.com/yescorihuela/tasks_management/internal/infrastructure/usecases"
+	"github.com/yescorihuela/tasks_management/internal/application/usecases"
+	"github.com/yescorihuela/tasks_management/internal/domain/entities"
 )
 
 type TaskHandler struct {
-	taskUseCase taskUseCase.TaskUseCase
+	taskUseCase usecases.TaskUseCase
 }
 
 func NewTaskHandler(
-	taskUseCase taskUseCase.TaskUseCase,
+	taskUseCase usecases.TaskUseCase,
 ) *TaskHandler {
 	return &TaskHandler{
 		taskUseCase: taskUseCase,
@@ -19,7 +19,7 @@ func NewTaskHandler(
 }
 
 func (app *TaskHandler) Save(ctx *gin.Context) {
-	app.taskUseCase.Save(domain.Task{})
+	app.taskUseCase.Save(entities.Task{})
 }
 
 func (app *TaskHandler) GetById(ctx *gin.Context) {}
