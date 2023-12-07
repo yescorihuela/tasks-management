@@ -1,8 +1,8 @@
 package infrastructure
 
 import (
-	taskEntity "github.com/yescorihuela/tasks-management/internal/domain/entities"
-	taskModel "github.com/yescorihuela/tasks-management/internal/infrastructure/models"
+	taskEntity "github.com/yescorihuela/tasks_management/internal/domain/entities"
+	taskModel "github.com/yescorihuela/tasks_management/internal/infrastructure/models"
 )
 
 func TaskModelToTaskEntity(tm taskModel.Task) taskEntity.Task {

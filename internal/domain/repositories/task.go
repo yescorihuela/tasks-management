@@ -1,7 +1,7 @@
 package repositories
 
 import (
-	taskEntity "github.com/yescorihuela/tasks-management/internal/domain/entities"
+	taskEntity "github.com/yescorihuela/tasks_management/internal/domain/entities"
 )
 
 type TaskRepository interface {

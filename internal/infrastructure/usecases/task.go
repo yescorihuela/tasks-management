@@ -1,8 +1,8 @@
 package usecases
 
 import (
-	taskEntity "github.com/yescorihuela/tasks-management/internal/domain/entities"
-	taskRepository "github.com/yescorihuela/tasks-management/internal/domain/repositories"
+	taskEntity "github.com/yescorihuela/tasks_management/internal/domain/entities"
+	taskRepository "github.com/yescorihuela/tasks_management/internal/domain/repositories"
 )
 
 type TaskUseCase interface {
