@@ -10,7 +10,7 @@ type PostgresqlRepository struct {
 	db *sqlx.DB
 }
 
-func NewDBConnection() (*sqlx.DB, error) {
+func NewPostgresqlDBConnection() (*sqlx.DB, error) {
 	return nil, nil
 }
 

@@ -1,12 +1,12 @@
 package infrastructure
 
 import (
-	taskEntity "github.com/yescorihuela/tasks_management/internal/domain/entities"
-	taskModel "github.com/yescorihuela/tasks_management/internal/infrastructure/models"
+	"github.com/yescorihuela/tasks_management/internal/domain/entities"
+	"github.com/yescorihuela/tasks_management/internal/infrastructure/models"
 )
 
-func TaskModelToTaskEntity(tm taskModel.Task) taskEntity.Task {
-	return taskEntity.Task{
+func TaskModelToTaskEntity(tm models.Task) entities.Task {
+	return entities.Task{
 		Id:          tm.Id,
 		Title:       tm.Title,
 		Description: tm.Description,
