@@ -2,7 +2,7 @@ package databases
 
 import (
 	"github.com/jmoiron/sqlx"
-	taskEntity "github.com/yescorihuela/tasks_management/internal/domain/entities"
+	"github.com/yescorihuela/tasks_management/internal/domain/entities"
 )
 
 type PostgresqlRepository struct {
@@ -19,20 +19,20 @@ func NewPostgresqlRepository(db *sqlx.DB) *PostgresqlRepository {
 	}
 }
 
-func (repo *PostgresqlRepository) Save(task taskEntity.Task) (taskEntity.Task, error) {
-	return taskEntity.Task{}, nil
+func (repo *PostgresqlRepository) Save(task entities.Task) (entities.Task, error) {
+	return entities.Task{}, nil
 }
 
-func (repo *PostgresqlRepository) GetById(id int) (taskEntity.Task, error) {
-	return taskEntity.Task{}, nil
+func (repo *PostgresqlRepository) GetById(id int) (entities.Task, error) {
+	return entities.Task{}, nil
 }
 
-func (repo *PostgresqlRepository) GetByName(id int) (taskEntity.Task, error) {
-	return taskEntity.Task{}, nil
+func (repo *PostgresqlRepository) GetByName(id int) (entities.Task, error) {
+	return entities.Task{}, nil
 }
 
-func (repo *PostgresqlRepository) Update(id int, task taskEntity.Task) (taskEntity.Task, error) {
-	return taskEntity.Task{}, nil
+func (repo *PostgresqlRepository) Update(id int, task entities.Task) (entities.Task, error) {
+	return entities.Task{}, nil
 }
 
 func (repo *PostgresqlRepository) Delete(id int) error {
