@@ -31,14 +31,14 @@ func (app *TaskHandler) Save(ctx *gin.Context) {
 	entityTask, err := mappers.FromRequestToEntity(req)
 
 	if err != nil {
-		ctx.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		ctx.JSON(http.StatusBadRequest, gin.H{"errors": err})
 		return
 	}
 
-	savedTask, err := app.taskUseCase.Save(entityTask)
+	savedTask, errSave := app.taskUseCase.Save(entityTask)
 	taskResponse := mappers.FromEntityToResponse(savedTask)
 	if err != nil {
-		ctx.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		ctx.JSON(http.StatusBadRequest, gin.H{"error": errSave})
 		return
 	}
 	ctx.JSON(http.StatusCreated, taskResponse)
