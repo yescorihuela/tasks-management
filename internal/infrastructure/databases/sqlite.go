@@ -1,27 +1,37 @@
 package databases
 
 import (
-	"github.com/jmoiron/sqlx"
+	"database/sql"
+	"log"
+
+	_ "github.com/mattn/go-sqlite3"
 	"github.com/yescorihuela/tasks_management/internal/domain/entities"
 	"github.com/yescorihuela/tasks_management/internal/domain/repositories"
 )
 
 type SQLIteRepository struct {
-	db *sqlx.DB
+	db *sql.DB
 }
 
-func NewSQLiteDBConnection() (*sqlx.DB, error) {
-	return nil, nil
+func NewSQLiteDBConnection() (*sql.DB, error) {
+
+	sqlite, err := sql.Open("sqlite3", "internal/infrastructure/databases/sqlite-files/database.db")
+
+	if err != nil {
+		log.Fatal(err)
+		return nil, err
+	}
+	return sqlite, nil
 }
 
-func NewSQLiteRepository(db *sqlx.DB) repositories.TaskRepository {
+func NewSQLiteRepository(db *sql.DB) repositories.TaskRepository {
 	return &SQLIteRepository{
 		db: db,
 	}
 }
 
-func (repo *SQLIteRepository) Save(task entities.Task) (entities.Task, error) {
-	return entities.Task{}, nil
+func (repo *SQLIteRepository) Save(task entities.Task) (*entities.Task, error) {
+	return &entities.Task{}, nil
 }
 
 func (repo *SQLIteRepository) GetById(id int) (entities.Task, error) {

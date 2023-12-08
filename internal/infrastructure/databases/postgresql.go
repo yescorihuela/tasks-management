@@ -1,41 +1,35 @@
 package databases
 
 import (
-	"github.com/jmoiron/sqlx"
-	"github.com/yescorihuela/tasks_management/internal/domain/entities"
-	"github.com/yescorihuela/tasks_management/internal/domain/repositories"
+	"database/sql"
+
+	"github.com/golang-migrate/migrate/v4"
+	"github.com/golang-migrate/migrate/v4/database/postgres"
+	_ "github.com/golang-migrate/migrate/v4/database/postgres"
+	_ "github.com/golang-migrate/migrate/v4/source/file"
+
+	_ "github.com/lib/pq"
 )
 
-type PostgresqlRepository struct {
-	db *sqlx.DB
-}
+func NewPostgresqlDBConnection() (*sql.DB, error) {
+	psql, err := sql.Open("postgres", "postgres://greenlight:pa55word@localhost/tasks?sslmode=disable")
 
-func NewPostgresqlDBConnection() (*sqlx.DB, error) {
-	return nil, nil
-}
-
-func NewPostgresqlRepository(db *sqlx.DB) repositories.TaskRepository {
-	return &PostgresqlRepository{
-		db: db,
+	if err != nil {
+		panic(err)
 	}
-}
 
-func (repo *PostgresqlRepository) Save(task entities.Task) (entities.Task, error) {
-	return entities.Task{}, nil
-}
+	migrator, err := postgres.WithInstance(psql, &postgres.Config{})
+	if err != nil {
+		panic(err)
+	}
+	migration, err := migrate.NewWithDatabaseInstance("file://internal/infrastructure/databases/postgresql-migrations", "postgres", migrator)
 
-func (repo *PostgresqlRepository) GetById(id int) (entities.Task, error) {
-	return entities.Task{}, nil
-}
+	if err != nil {
+		panic(err)
+	}
 
-func (repo *PostgresqlRepository) GetByName(name string) (entities.Task, error) {
-	return entities.Task{}, nil
-}
-
-func (repo *PostgresqlRepository) Update(id int, task entities.Task) (entities.Task, error) {
-	return entities.Task{}, nil
-}
-
-func (repo *PostgresqlRepository) Delete(id int) error {
-	return nil
+	if err = migration.Up(); err != nil && err != migrate.ErrNoChange {
+		panic(err)
+	}
+	return psql, nil
 }

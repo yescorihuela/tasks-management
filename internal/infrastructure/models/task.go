@@ -4,7 +4,7 @@ import "time"
 
 type Task struct {
 	Id          int       `json:"id"`
-	Title       string    `json:"task"`
+	Title       string    `json:"title"`
 	Description string    `json:"description"`
 	ExpiresAt   time.Time `json:"expires_at"`
 	Status      string    `json:"status"`

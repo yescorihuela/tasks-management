@@ -1,4 +1,4 @@
-package infrastructure
+package mappers
 
 import (
 	"github.com/yescorihuela/tasks_management/internal/domain/entities"
