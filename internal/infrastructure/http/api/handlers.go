@@ -1,6 +1,7 @@
 package api
 
 import (
+	"errors"
 	"net/http"
 
 	"github.com/gin-gonic/gin"
@@ -8,6 +9,7 @@ import (
 	"github.com/yescorihuela/tasks_management/internal/domain/entities"
 	"github.com/yescorihuela/tasks_management/internal/infrastructure/mappers"
 	"github.com/yescorihuela/tasks_management/internal/infrastructure/mappers/validator"
+	"github.com/yescorihuela/tasks_management/internal/infrastructure/models"
 )
 
 type TaskHandler struct {
@@ -66,4 +68,22 @@ func (app *TaskHandler) GetByName(ctx *gin.Context) {}
 
 func (app *TaskHandler) Update(ctx *gin.Context) {}
 
-func (app *TaskHandler) Delete(ctx *gin.Context) {}
+func (app *TaskHandler) Delete(ctx *gin.Context) {
+	id := ctx.Param("id")
+	validator := validator.NewValidator()
+	if entities.ValidateTaskId(id, validator); !validator.IsValid() {
+		ctx.JSON(http.StatusNotFound, gin.H{"errors": validator.Errors})
+		return
+	}
+	err := app.taskUseCase.Delete(id)
+
+	if errors.Is(models.ErrorRecordNotFound, err) {
+		ctx.JSON(http.StatusNotFound, gin.H{"error": err.Error()})
+		return
+	} else if err != nil {
+		ctx.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+		return
+	}
+
+	ctx.JSON(http.StatusNoContent, nil)
+}

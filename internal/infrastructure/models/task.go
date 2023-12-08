@@ -1,9 +1,14 @@
 package models
 
 import (
+	"errors"
 	"time"
 
 	"github.com/yescorihuela/tasks_management/internal/domain/entities"
+)
+
+var (
+	ErrorRecordNotFound = errors.New("record not found")
 )
 
 type Task struct {

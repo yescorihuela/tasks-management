@@ -2,6 +2,7 @@ package repositories
 
 import (
 	"database/sql"
+	"errors"
 	"regexp"
 	"strings"
 
@@ -116,9 +117,17 @@ func (repo *PostgresqlRepository) Update(id string, task entities.Task) (entitie
 }
 
 func (repo *PostgresqlRepository) Delete(id string) error {
-	// queryPostgres := compact(`
-	// 	DELETE
-	// 	FROM tasks
-	// 	WHERE id = $1`)
+	queryPostgres := compact(`
+		DELETE
+		FROM tasks
+		WHERE id = $1
+		RETURNING id`)
+	var returnedId string
+	err := repo.db.QueryRow(queryPostgres, id).Scan(&returnedId)
+	if err != nil && errors.Is(err, sql.ErrNoRows) {
+		return models.ErrorRecordNotFound
+	} else if err != nil {
+		return err
+	}
 	return nil
 }
