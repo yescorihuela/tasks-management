@@ -21,9 +21,13 @@ type Task struct {
 	UpdatedAt   time.Time
 }
 
-func ValidateTask(task Task, validator *validator.Validator) {
-	validator.Check(len(task.Id) > 0, "id", "invalid or not generated")
-	validator.Check(len(task.Title) > 3 && len(task.Title) <= 255, "title", "invalid or incompleted title")
-	validator.Check(len(task.Description) > 3 && len(task.Description) <= 255, "description", "invalid description")
-	validator.Check(validator.In(task.Status, []string{"no completado", "completado", "en proceso"}), "status", "invalid status")
+func ValidateTask(task Task, v *validator.Validator) {
+	v.Check(len(task.Id) > 0, "id", "invalid or not generated")
+	v.Check(len(task.Title) > 3 && len(task.Title) <= 255, "title", "invalid or incompleted title")
+	v.Check(len(task.Description) > 3 && len(task.Description) <= 255, "description", "invalid description")
+	v.Check(v.In(task.Status, []string{"no completado", "completado", "en proceso"}), "status", "invalid status")
+}
+
+func ValidateTaskId(id string, v *validator.Validator) {
+	v.Check(len(id) == 26, "id", "invalid ulid id")
 }

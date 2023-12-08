@@ -5,7 +5,9 @@ import (
 
 	"github.com/gin-gonic/gin"
 	"github.com/yescorihuela/tasks_management/internal/application/usecases"
+	"github.com/yescorihuela/tasks_management/internal/domain/entities"
 	"github.com/yescorihuela/tasks_management/internal/infrastructure/mappers"
+	"github.com/yescorihuela/tasks_management/internal/infrastructure/mappers/validator"
 )
 
 type TaskHandler struct {
@@ -31,7 +33,7 @@ func (app *TaskHandler) Save(ctx *gin.Context) {
 	entityTask, err := mappers.FromRequestToEntity(req)
 
 	if err != nil {
-		ctx.JSON(http.StatusBadRequest, gin.H{"errors": err})
+		ctx.JSON(http.StatusUnprocessableEntity, gin.H{"errors": err})
 		return
 	}
 
@@ -46,6 +48,11 @@ func (app *TaskHandler) Save(ctx *gin.Context) {
 
 func (app *TaskHandler) GetById(ctx *gin.Context) {
 	id := ctx.Param("id")
+	validator := validator.NewValidator()
+	if entities.ValidateTaskId(id, validator); !validator.IsValid() {
+		ctx.JSON(http.StatusNotFound, gin.H{"errors": validator.Errors})
+		return
+	}
 	task, err := app.taskUseCase.GetById(id)
 	taskResponse := mappers.FromEntityToResponse(task)
 	if err != nil {
