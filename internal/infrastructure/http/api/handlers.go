@@ -5,7 +5,6 @@ import (
 
 	"github.com/gin-gonic/gin"
 	"github.com/yescorihuela/tasks_management/internal/application/usecases"
-	"github.com/yescorihuela/tasks_management/internal/domain/entities"
 	"github.com/yescorihuela/tasks_management/internal/infrastructure/mappers"
 )
 
@@ -23,23 +22,38 @@ func NewTaskHandler(
 
 func (app *TaskHandler) Save(ctx *gin.Context) {
 	var req mappers.TaskRequest
+
 	if err := ctx.BindJSON(&req); err != nil {
 		ctx.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		return
 	}
-	var entityTask entities.Task
-	entityTask.Title = req.Title
-	entityTask.Description = req.Description
-	entityTask.Status = req.Status
 
-	t, err := app.taskUseCase.Save(entityTask)
+	entityTask, err := mappers.FromRequestToEntity(req)
+
 	if err != nil {
 		ctx.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}
-	ctx.JSON(http.StatusOK, t)
+
+	savedTask, err := app.taskUseCase.Save(entityTask)
+	taskResponse := mappers.FromEntityToResponse(savedTask)
+	if err != nil {
+		ctx.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		return
+	}
+	ctx.JSON(http.StatusCreated, taskResponse)
 }
 
-func (app *TaskHandler) GetById(ctx *gin.Context) {}
+func (app *TaskHandler) GetById(ctx *gin.Context) {
+	id := ctx.Param("id")
+	task, err := app.taskUseCase.GetById(id)
+	taskResponse := mappers.FromEntityToResponse(task)
+	if err != nil {
+		ctx.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+		return
+	}
+	ctx.JSON(http.StatusOK, taskResponse)
+}
 
 func (app *TaskHandler) GetByName(ctx *gin.Context) {}
 

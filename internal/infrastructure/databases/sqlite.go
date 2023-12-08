@@ -30,11 +30,11 @@ func NewSQLiteRepository(db *sql.DB) repositories.TaskRepository {
 	}
 }
 
-func (repo *SQLIteRepository) Save(task entities.Task) (*entities.Task, error) {
-	return &entities.Task{}, nil
+func (repo *SQLIteRepository) Save(task entities.Task) (entities.Task, error) {
+	return entities.Task{}, nil
 }
 
-func (repo *SQLIteRepository) GetById(id int) (entities.Task, error) {
+func (repo *SQLIteRepository) GetById(id string) (entities.Task, error) {
 	return entities.Task{}, nil
 }
 
@@ -42,10 +42,10 @@ func (repo *SQLIteRepository) GetByName(name string) (entities.Task, error) {
 	return entities.Task{}, nil
 }
 
-func (repo *SQLIteRepository) Update(id int, task entities.Task) (entities.Task, error) {
+func (repo *SQLIteRepository) Update(id string, task entities.Task) (entities.Task, error) {
 	return entities.Task{}, nil
 }
 
-func (repo *SQLIteRepository) Delete(id int) error {
+func (repo *SQLIteRepository) Delete(id string) error {
 	return nil
 }

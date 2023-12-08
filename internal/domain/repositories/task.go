@@ -5,9 +5,9 @@ import (
 )
 
 type TaskRepository interface {
-	Save(task entities.Task) (*entities.Task, error)
-	GetById(id int) (entities.Task, error)
+	Save(task entities.Task) (entities.Task, error)
+	GetById(id string) (entities.Task, error)
 	GetByName(name string) (entities.Task, error)
-	Update(id int, task entities.Task) (entities.Task, error)
-	Delete(id int) error
+	Update(id string, task entities.Task) (entities.Task, error)
+	Delete(id string) error
 }

@@ -12,7 +12,6 @@ import (
 )
 
 func main() {
-
 	db, err := databases.NewPostgresqlDBConnection()
 	if err != nil {
 		panic(err)
@@ -28,5 +27,4 @@ func main() {
 	if err := app.Run(); err != nil {
 		panic(err)
 	}
-
 }
