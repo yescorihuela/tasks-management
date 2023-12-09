@@ -35,7 +35,7 @@ func (i *inputTaskPartialUpdate) BuildTaskToPartialUpdate(task entities.Task) (e
 	if i.ExpiresAt != nil {
 		expiresAt, err := time.Parse("2006-01-02 15:04:05", *i.ExpiresAt)
 		if err != nil {
-			return entities.Task{}, 0
+			return task, 0
 		}
 		if task.ExpiresAt.UTC() != expiresAt {
 			task.ExpiresAt = expiresAt
