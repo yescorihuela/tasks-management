@@ -23,7 +23,6 @@ func NewApplication(
 func (app *Application) RegisterRoutes() {
 	app.router.POST("/task/new", app.taskHandler.Save)
 	app.router.GET("/task/by-id/:id", app.taskHandler.GetById)
-	app.router.GET("/task/by-name/:name", app.taskHandler.GetByName)
 	app.router.PATCH("task/:id", app.taskHandler.Update)
 	app.router.DELETE("task/:id", app.taskHandler.Delete)
 }

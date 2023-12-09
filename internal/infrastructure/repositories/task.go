@@ -34,7 +34,7 @@ func (repo *PostgresqlRepository) Save(task entities.Task) (entities.Task, error
 			(id, title, description, status, expires_at, created_at, updated_at)
 		VALUES
 			($1, $2, $3, $4, $5, $6, $7)
-		RETURNING id, title, description, status, expires_at, created_at, updated_at
+		RETURNING *
 	`)
 
 	var modelTask models.Task
@@ -113,7 +113,58 @@ func (repo *PostgresqlRepository) GetByName(name string) (entities.Task, error) 
 }
 
 func (repo *PostgresqlRepository) Update(id string, task entities.Task) (entities.Task, error) {
-	return entities.Task{}, nil
+	queryPostgres := compact(`
+		UPDATE tasks
+		SET
+		title = $1,
+		description = $2,
+		status = $3,
+		expires_at = $4,
+		created_at = $5,
+		updated_at = $6
+		WHERE id = $7
+		RETURNING *
+	`)
+
+	var modelTask models.Task
+	err := repo.db.QueryRow(queryPostgres,
+		task.Title,
+		task.Description,
+		task.Status,
+		task.ExpiresAt.UTC(),
+		task.CreatedAt.UTC(),
+		task.UpdatedAt.UTC(),
+		task.Id,
+	).
+		Scan(
+			&modelTask.Id,
+			&modelTask.Title,
+			&modelTask.Description,
+			&modelTask.Status,
+			&modelTask.ExpiresAt,
+			&modelTask.CreatedAt,
+			&modelTask.UpdatedAt,
+		)
+
+	if err != nil && errors.Is(err, sql.ErrNoRows) {
+		return entities.Task{}, models.ErrorRecordNotFound
+	} else if err != nil {
+		return entities.Task{}, err
+	}
+
+	if err != nil {
+		return entities.Task{}, err
+	}
+	updatedTask := entities.Task{
+		Id:          modelTask.Id,
+		Title:       modelTask.Title,
+		Description: modelTask.Description,
+		Status:      modelTask.Status,
+		ExpiresAt:   modelTask.ExpiresAt,
+		CreatedAt:   modelTask.CreatedAt,
+		UpdatedAt:   modelTask.UpdatedAt,
+	}
+	return updatedTask, nil
 }
 
 func (repo *PostgresqlRepository) Delete(id string) error {

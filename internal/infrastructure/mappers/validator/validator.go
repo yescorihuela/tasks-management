@@ -31,7 +31,6 @@ func (v *Validator) Check(ok bool, key, message string) {
 func (v *Validator) In(value string, list []string) bool {
 	fmt.Println(list)
 	for _, v := range list {
-		fmt.Println("value == v", value, v)
 		if value == v {
 			return true
 		}

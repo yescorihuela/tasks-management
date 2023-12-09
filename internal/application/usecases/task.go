@@ -8,7 +8,6 @@ import (
 type TaskUseCase interface {
 	Save(task entities.Task) (entities.Task, error)
 	GetById(id string) (entities.Task, error)
-	GetByName(name string) (entities.Task, error)
 	Update(id string, task entities.Task) (entities.Task, error)
 	Delete(id string) error
 }
@@ -29,10 +28,6 @@ func (s *taskUseCase) Save(task entities.Task) (entities.Task, error) {
 
 func (s *taskUseCase) GetById(id string) (entities.Task, error) {
 	return s.taskRepository.GetById(id)
-}
-
-func (s *taskUseCase) GetByName(name string) (entities.Task, error) {
-	return s.taskRepository.GetByName(name)
 }
 
 func (s *taskUseCase) Update(id string, task entities.Task) (entities.Task, error) {
